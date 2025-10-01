@@ -111,7 +111,7 @@
 	<title>Agregar - NexusPay</title>
 </svelte:head>
 
-<div class="mb-16 min-h-screen bg-gray-50">
+<div class="mb-16 min-h-dvh bg-gray-50">
 	<div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
 		<!-- Header -->
 		<div class="mb-8">

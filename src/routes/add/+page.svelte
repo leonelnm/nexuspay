@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { create } from '$lib/db/model/subscription';
 	import type { RecurringPayment } from '$lib/types';
-	import { fade, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 
 	// Types
 	interface FormData extends Omit<RecurringPayment, 'id'> {
@@ -17,7 +18,8 @@
 		paymentDate: '',
 		frequency: 'monthly',
 		paymentCount: undefined,
-		endDate: undefined
+		endDate: undefined,
+		isActive: true
 	});
 
 	let errors: Record<string, string> = $state({});
@@ -66,7 +68,15 @@
 			console.log('Saving:', formData);
 
 			// Simulate API call
-			await new Promise((resolve) => setTimeout(resolve, 1000));
+			await create({
+				name: formData.name,
+				description: formData.description,
+				amount: formData.amount,
+				paymentDate: formData.paymentDate,
+				frequency: formData.frequency,
+				paymentCount: formData.type === 'recurring' ? formData.paymentCount : undefined,
+				endDate: formData.type === 'recurring' ? formData.endDate : undefined
+			});
 
 			// Redirect back to dashboard
 			goto('/');
@@ -92,8 +102,6 @@
 
 	$effect(() => {
 		if (formData.type) {
-			console.log('Type changed to:', formData.type);
-
 			resetFormForType();
 		}
 	});

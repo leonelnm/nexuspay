@@ -4,12 +4,27 @@
 	import { page } from '$app/state';
 	import { fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
+	import { supabase } from '$lib/db/supabaseClient';
+	import { authSession } from '$lib/db/authState.svelte';
+	import { goto } from '$app/navigation';
 
 	let { children } = $props();
 
 	// Track previous path to determine slide direction
 	let previousPath = $state('/');
 	let direction = $state(1);
+
+	supabase.auth.getSession().then(({ data }) => {
+		authSession.session = data.session;
+	});
+
+	supabase.auth.onAuthStateChange((_event, newSession) => {
+		authSession.session = newSession;
+	});
+
+	if (!authSession.session && page.url.pathname !== '/login') {
+		goto('/login');
+	}
 
 	$effect(() => {
 		const currentPath = page.url.pathname;
@@ -23,6 +38,8 @@
 
 		previousPath = currentPath;
 	});
+
+	console.log('layout');
 </script>
 
 <svelte:head>

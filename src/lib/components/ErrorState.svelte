@@ -6,7 +6,7 @@
 	let { message }: Props = $props();
 </script>
 
-<div class="flex min-h-screen items-center justify-center bg-gray-50">
+<div class="flex min-h-dvh items-center justify-center bg-gray-50">
 	<div class="text-center">
 		<svg
 			class="mx-auto h-16 w-16 text-red-500"

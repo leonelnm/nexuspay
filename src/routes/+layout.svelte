@@ -67,10 +67,10 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-<div class="relative min-h-screen w-full overflow-x-hidden bg-gray-50">
+<div class="relative min-h-dvh w-full overflow-x-hidden bg-gray-50">
 	{#if !sessionLoaded && page.url.pathname !== '/login'}
 		<!-- Loading state while checking session -->
-		<div class="flex min-h-screen items-center justify-center">
+		<div class="flex min-h-dvh items-center justify-center">
 			<div class="text-center">
 				<div
 					class="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600"
@@ -81,7 +81,7 @@
 	{:else}
 		{#key page.url.pathname}
 			<div
-				class="min-h-screen w-full"
+				class="min-h-dvh w-full"
 				in:fly={{ x: 300 * direction, duration: 100, easing: cubicInOut }}
 			>
 				<!-- Logout Button - Only show when authenticated and not on login page -->

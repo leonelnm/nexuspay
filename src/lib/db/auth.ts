@@ -25,3 +25,7 @@ export const logout = async () => {
   const { error } = await supabase.auth.signOut();
   return { error };
 }
+
+export const getCurrentSession = async () => {
+  return await supabase.auth.getSession();
+}

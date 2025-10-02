@@ -32,8 +32,8 @@
 			errors.name = 'El nombre es requerido';
 		}
 
-		if (!formData.description.trim()) {
-			errors.description = 'La descripción es requerida';
+		if (!formData.description.trim() || formData.description.length > 100) {
+			errors.description = 'La descripción es requerida y debe tener menos de 100 caracteres';
 		}
 
 		if (formData.amount <= 0) {
@@ -69,8 +69,8 @@
 
 			// Simulate API call
 			await create({
-				name: formData.name,
-				description: formData.description,
+				name: formData.name.trim(),
+				description: formData.description.trim(),
 				amount: formData.amount,
 				paymentDate: formData.paymentDate,
 				frequency: formData.frequency,

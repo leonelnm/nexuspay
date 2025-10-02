@@ -3,6 +3,7 @@
 	import { create } from '$lib/db/model/subscription';
 	import type { RecurringPayment } from '$lib/types';
 	import { slide } from 'svelte/transition';
+	import Toast from '$lib/components/Toast.svelte';
 
 	// Types
 	interface FormData extends Omit<RecurringPayment, 'id'> {
@@ -24,6 +25,7 @@
 
 	let errors: Record<string, string> = $state({});
 	let isSubmitting = $state(false);
+	let toast = $state<{ message: string; type: 'success' | 'error' } | null>(null);
 
 	function validateForm(): boolean {
 		errors = {};
@@ -74,11 +76,23 @@
 				endDate: formData.type === 'recurring' ? formData.endDate : undefined
 			});
 
-			// Redirect back to dashboard
-			goto('/');
+			// Show success message
+			toast = { message: '¡Servicio guardado exitosamente!', type: 'success' };
+
+			// Redirect after showing success message
+			setTimeout(() => {
+				goto('/');
+			}, 1500);
 		} catch (error) {
-			console.error('Error saving:', error);
-			// Handle error - show toast or error message
+			toast = {
+				message:
+					'Error al guardar el servicio. Por favor, verifica los datos e inténtalo nuevamente.',
+				type: 'error'
+			};
+			// Auto-hide error after 5 seconds
+			setTimeout(() => {
+				toast = null;
+			}, 5000);
 		} finally {
 			isSubmitting = false;
 		}
@@ -109,6 +123,11 @@
 
 <div class="mb-16 min-h-dvh bg-gray-50">
 	<div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
+		<!-- Toast Notification -->
+		{#if toast}
+			<Toast message={toast.message} type={toast.type} onClose={() => (toast = null)} />
+		{/if}
+
 		<!-- Header -->
 		<div class="mb-8">
 			<button

@@ -19,3 +19,8 @@ export function formatCurrency(amount: number): string {
 export function formatDate(dateString: string): string {
   return new Date(dateString).toLocaleDateString('es-ES');
 }
+
+export function fromDateToString(date: Date | null): string {
+  if (!date) return '';
+  return date.toLocaleDateString('es-ES');
+}

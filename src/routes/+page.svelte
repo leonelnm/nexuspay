@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { getAll } from '$lib/db/model/subscription';
-	import type { NexusPayData } from '$lib/types';
+	import type { NexusPayData, RecurringPayment, Subscription } from '$lib/types';
 	import { formatCurrency } from '$lib/utils/formatUtil';
 
 	import ErrorState from '$lib/components/ErrorState.svelte';
@@ -17,23 +17,30 @@
 	let loading = $state(true);
 	let error = $state<string | null>(null);
 
-	// Calcular totales
-	const monthlySubscriptions = $derived(
-		formatCurrency(
-			subscriptions
-				.filter((s) => s.isActive && s.frequency === 'monthly')
-				.reduce((sum, s) => sum + s.amount, 0)
-		)
-	);
+	function calculateMonthlyTotal(items: Subscription[] | RecurringPayment[]) {
+		const monthlyPayments = items
+			.filter(
+				(item) =>
+					item.isActive &&
+					item.frequency === 'monthly' &&
+					new Date().getMonth() >= new Date(item.paymentDate).getMonth()
+			)
+			.reduce((sum, item) => sum + item.amount, 0);
 
-	const monthlyRecurringPayments = $derived(
-		formatCurrency(
-			recurringPayments
-				.filter((p) => p.isActive && p.frequency === 'monthly')
-				.reduce((sum, p) => sum + p.amount, 0)
-		)
-	);
+		const annualPayments = items
+			.filter(
+				(item) =>
+					item.isActive &&
+					item.frequency === 'yearly' &&
+					new Date().getMonth() === new Date(item.paymentDate).getMonth()
+			)
+			.reduce((sum, item) => sum + item.amount, 0);
 
+		return formatCurrency(monthlyPayments + annualPayments);
+	}
+
+	const monthlySubscriptions = $derived(calculateMonthlyTotal(subscriptions));
+	const monthlyRecurringPayments = $derived(calculateMonthlyTotal(recurringPayments));
 	const totalServices = $derived((subscriptions.length + recurringPayments.length).toString());
 
 	function goToAddPage() {

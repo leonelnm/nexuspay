@@ -64,10 +64,6 @@
 		isSubmitting = true;
 
 		try {
-			// Here you would typically send the data to your backend
-			console.log('Saving:', formData);
-
-			// Simulate API call
 			await create({
 				name: formData.name.trim(),
 				description: formData.description.trim(),

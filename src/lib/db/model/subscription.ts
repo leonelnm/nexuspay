@@ -17,8 +17,6 @@ interface SubscriptionDB {
 }
 
 export const create = async (newSub: NewSubscription) => {
-  console.log('Creating new subscription in the database...', newSub);
-
   const { error } = await supabase
     .from(TABLE_NAME)
     .insert({

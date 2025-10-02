@@ -58,8 +58,6 @@
 		}
 		loggingOut = false;
 	};
-
-	console.log('layout');
 </script>
 
 <div class="relative min-h-dvh w-full overflow-x-hidden bg-gray-50">

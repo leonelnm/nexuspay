@@ -1,12 +1,56 @@
 <script lang="ts">
 	import type { RecurringPayment } from '$lib/types';
-	import { formatCurrency, formatDate, formatFrequency } from '$lib/utils/formatUtil';
+	import {
+		formatCurrency,
+		formatDate,
+		formatFrequency,
+		fromDateToString
+	} from '$lib/utils/formatUtil';
 
 	interface Props {
 		payment: RecurringPayment;
 	}
 
 	let { payment }: Props = $props();
+
+	let nextPayment = $derived.by(() => {
+		if (!payment.isActive) {
+			return null;
+		}
+
+		const now = new Date();
+
+		const todayUTC = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+		let nextDateUTC = new Date(payment.paymentDate);
+
+		let count = 0;
+		while (nextDateUTC.getTime() < todayUTC.getTime()) {
+			switch (payment.frequency) {
+				case 'weekly':
+					nextDateUTC.setDate(nextDateUTC.getDate() + 7);
+					break;
+				case 'monthly':
+					nextDateUTC.setMonth(nextDateUTC.getMonth() + 1);
+					break;
+				case 'yearly':
+					nextDateUTC.setFullYear(nextDateUTC.getFullYear() + 1);
+					break;
+			}
+			count++;
+			if (
+				(payment.paymentCount && count >= payment.paymentCount) ||
+				(payment.endDate && nextDateUTC.getTime() > new Date(payment.endDate).getTime())
+			) {
+				return null;
+			}
+		}
+
+		if (nextDateUTC.getTime() === new Date(payment.paymentDate).getTime()) {
+			return null;
+		}
+
+		return nextDateUTC;
+	});
 </script>
 
 <div class="px-6 py-4 transition-colors duration-150 hover:bg-gray-50">
@@ -107,6 +151,25 @@
 							/>
 						</svg>
 						Hasta {formatDate(payment.endDate)}
+					</span>
+				{/if}
+				{#if nextPayment}
+					<span class="flex items-center gap-1">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke-width="1.5"
+							stroke="currentColor"
+							class="size-4"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+							/>
+						</svg>
+						Próximo pago: {fromDateToString(nextPayment)}
 					</span>
 				{/if}
 			</div>

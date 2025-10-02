@@ -31,13 +31,15 @@
 	};
 </script>
 
-<div
-	class="flex min-h-dvh items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-12"
->
-	<div class="w-full max-w-md">
+<div class="flex min-h-dvh justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-12">
+	<div class="w-full max-w-md py-40">
+		<div class="mb-6 flex justify-center">
+			<img src="/img/nexuspay.webp" alt="NexusPay" class="mx-auto aspect-square h-20 w-20" />
+		</div>
 		<!-- Logo/Título -->
 		<div class="mb-8 text-center">
 			<h1 class="mb-2 text-4xl font-bold text-gray-900">NexusPay</h1>
+			<p class="text-gray-600">Gestiona tus suscripciones y pagos recurrentes</p>
 		</div>
 
 		<!-- Card Principal -->

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/state';
 	import { fly } from 'svelte/transition';
 	import { cubicInOut } from 'svelte/easing';
@@ -62,10 +61,6 @@
 
 	console.log('layout');
 </script>
-
-<svelte:head>
-	<link rel="icon" href={favicon} />
-</svelte:head>
 
 <div class="relative min-h-dvh w-full overflow-x-hidden bg-gray-50">
 	{#if !sessionLoaded && page.url.pathname !== '/login'}

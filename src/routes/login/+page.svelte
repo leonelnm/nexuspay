@@ -31,7 +31,7 @@
 	};
 </script>
 
-<div class="flex justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-12">
+<div class="flex min-h-dvh justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4 py-12">
 	<div class="w-full max-w-md py-28">
 		<div class="mb-6 flex justify-center">
 			<img src="/img/nexuspay.webp" alt="NexusPay" class="mx-auto aspect-square h-20 w-20" />

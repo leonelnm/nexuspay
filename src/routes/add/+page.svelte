@@ -82,7 +82,7 @@
 			// Redirect after showing success message
 			setTimeout(() => {
 				goto('/');
-			}, 1500);
+			}, 500);
 		} catch (error) {
 			toast = {
 				message:

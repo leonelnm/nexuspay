@@ -45,10 +45,6 @@
 			}
 		}
 
-		if (nextDateUTC.getTime() === new Date(payment.paymentDate).getTime()) {
-			return null;
-		}
-
 		return nextDateUTC;
 	});
 </script>
